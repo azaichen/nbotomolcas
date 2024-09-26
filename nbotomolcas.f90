@@ -43,10 +43,11 @@ program nbotomolden
 		   write(molcas,'(A,I4,I4)') '* ORBITAL', 1, i
 		   write(molcas,140) orbc(i,:)
         enddo
-     
+		
+		read(nbos,*)(occ(i),i=1,NBAS)
+
         write(molcas,'(A)') '#OCC'
         write(molcas,'(A)') '* OCCUPATION NUMBERS'
-		occ = 0.0D0
 		write(molcas,140) occ
 	    write(molcas,'(A)') '#OCHR'
         write(molcas,'(A)') '* OCCUPATION NUMBERS (HUMAN-READABLE)'
