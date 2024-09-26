@@ -4,17 +4,8 @@ FC90   = gfortran
 
 LINKER = gfortran
 
-### Disable/Enable OpenMP support
-OMP = 
-
 ### Compilation/Linking options
 FOPT = -g -Wall -Wno-tabs -fbounds-check -fbacktrace -ffpe-trap=zero,overflow,underflow # gfortran 
-
-### Extra libraries
-#FLIB=-llapack   # use this line if you have Lapack libraries installed
-#FLIB =         # use this line if you're using source code for DLASRT
-
-#FFLAGS = $(OMP)
 
 .SUFFIXES: .f .F .F90 .f90
 
