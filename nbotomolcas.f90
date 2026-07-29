@@ -5,10 +5,19 @@ program nbotomolden
 	character(len=512) :: nbofile
         real(8),dimension(:,:),allocatable :: orbc
 	real(8),dimension(:),allocatable :: occ
+        integer :: nargs
+	
+         NBAS = 0   
+         nargs = command_argument_count()
+
+         if (nargs < 1) then
+            write(*,*) 'Usage: nbotomolcas <NBO file>'
+            write(*,*) 'Example: nbotomolcas NBO-molcas.37'
+            stop 1
+         endif
          
-	 NBAS = 0   
-         write(*,*) 'Your NBO7 output file (.3x, .39, 37)?'
-	 read(*,*) nbofile
+         call get_command_argument(1, nbofile)
+         
              NBAS = nbas_from_31(trim(nbofile))
          if (NBAS <= 0) then
              write(*,*) 'Could not determine NBAS from the corresponding .31 file.'
