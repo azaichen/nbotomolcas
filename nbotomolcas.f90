@@ -5,7 +5,7 @@ program nbotomolden
 	character(len=512) :: nbofile
         real(8),dimension(:,:),allocatable :: orbc
 	real(8),dimension(:),allocatable :: occ
-        integer :: nargs
+        integer :: nargs, ios
 	
          NBAS = 0   
          nargs = command_argument_count()
@@ -59,9 +59,18 @@ program nbotomolden
 	       write(molcas,'(A,I4,I4)') '* ORBITAL', 1, i
 	       write(molcas,140) orbc(i,:)
         enddo
-		
-	read(nbos,*)(occ(i),i=1,NBAS)
 
+	read(nbos,*,iostat=ios)(occ(i),i=1,NBAS)
+        
+        if (ios < 0) then
+           ! EOF: occupation numbers are absent in this type of .41 file
+           occ = 0.0d0
+           write(*,'(A)') 'No occupation numbers found in .41 file; skipping this block.'
+        else if (ios > 0) then
+           write(*,'(A,I0)') 'Error while reading occupation numbers, IOSTAT = ', ios
+           stop 1
+        end if
+        
         write(molcas,'(A)') '#OCC'
         write(molcas,'(A)') '* OCCUPATION NUMBERS'
 	write(molcas,140) occ
